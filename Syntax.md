@@ -157,9 +157,12 @@ Blood type: AB+
 ```
 
 ### Raw strings
-Raw strings can be multiline. They are written with the quote character followed by a new line.
-Each line of the string needs to start indented by the same number of whitespaces as
-characters before the opening quote, plus an additional space.
+Raw strings can be multiline. They are written with the double quote character directly followed by a new line.
+Each line of the string needs to start indented up to the opening quote, plus an additional space.
+This is decided as the following:
+- Exactly the same whitespace indentation as the previous line (the string of ` ` and `\t` characters before non-whitespace)
+- A string of space (` `) characters with the length of the number of characters before the opening quote, after the indent in the previous line
+- A single whitespace (` ` or `\t`), or the closing quote to end the string
 The closing quote is aligned to the opening quote, without an additional space.
 All lines except the ones with opening and closing quotes are separate lines of the string,
 separated by a newline character.
