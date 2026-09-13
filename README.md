@@ -1,6 +1,6 @@
-# What is MOMEL?
+# What is TYGL?
 
-Mauricio's Obvious Minimal Expandable Language.
+**T**in**y** **G**eneric **L**anguage
 
 It is a human friendly language for writing configuration files.
 Inspired by TOML, with a more conscise, minimal feature set that allows for
@@ -11,7 +11,7 @@ and the meaning is always clear as day.
 
 # Features
 
-MOMEL has everything you truly need for configuration and nothing more:
+TYGL has everything you truly need for configuration and nothing more:
 - `# Comments`
 - Name-value pairs
 - Numbers (Integer and Floating point)
@@ -29,7 +29,7 @@ MOMEL has everything you truly need for configuration and nothing more:
 
 This is an example of a record about users:
 
-```momel
+```tygl
 # This file contains some data...
 # Edit it as needed!
 
