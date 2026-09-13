@@ -85,7 +85,7 @@ Scores: [
 ```
 
 ## Numbers
-Numbers can be both integers and decimal (with decimal dot `.` only).
+Numbers can be both integers and decimal (with decimal dot `.` only), signed with an optional `+` or `-`. 
 
 Just for readability numbers can contain underscores between digits for spacing and grouping digits.
 Example:
@@ -164,10 +164,12 @@ This is decided as the following:
 - A string of space (` `) characters with the length of the number of characters before the opening quote, after the indent in the previous line
 - A single whitespace (` ` or `\t`), or the closing quote to end the string
 The closing quote is aligned to the opening quote, without an additional space.
+
 All lines except the ones with opening and closing quotes are separate lines of the string,
 separated by a newline character.
 Remember that the last line doesn't end with a newline character,
 unless of course an empty line is written before the closing quote.
+Lines with less whitespace than needed and nothing else are treated as empty lines too.
 The lines are interpreted literally,
 with quotes and `\` characters just being normal characters of the string.
 Example:
