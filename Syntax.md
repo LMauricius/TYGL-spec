@@ -22,6 +22,7 @@ A comment must end on the same line where it starts, otherwise it is an error.
 The only exception is a multiline comment,
 which is opened by `(` immediately followed by the end of the line.
 It ends with the matching `)` on any of the following lines.
+Whitespace between that `(` and the end of the line is an error.
 Example:
 ```tygl
 (
@@ -49,9 +50,11 @@ Duration: 1h(approximately)6min (error)
 ```
 
 Comments can be used in identifiers too, still acting like a single space.
+Combined with trimming and collapsing of spaces, this keeps the identifier tidy.
 Example:
 ```tygl
 Weight (in kg): 75 (the identifier is "Weight")
+Mass (in kg) of Earth: 5.97219_+24 (the identifier is "Mass of Earth")
 ```
 
 # Values
@@ -76,8 +79,9 @@ Fields are put each into its own line. Tuples containing one value are still tup
 and they can contain no values at all too.
 
 Whitespace around the identifiers is trimmed,
-so if you *really* need an identifier to start or end with space
-use the escape sequence `\_`.
+and every run of spaces and tabs inside them is collapsed into a single space.
+If you *really* need an identifier to start or end with a space,
+or to contain several spaces in a row, use the escape sequence `\_`.
 
 The file itself is also a dictionary, just not enclosed by `{ }`.
 
