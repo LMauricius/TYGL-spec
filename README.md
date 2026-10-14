@@ -12,7 +12,7 @@ and the meaning is always clear as day.
 # Features
 
 TYGL has everything you truly need for configuration and nothing more:
-- `# Comments`
+- `(Comments)`
 - Name-value pairs
 - Numbers (Integer and Floating point)
 - Strings (simple, normal and raw)
@@ -30,8 +30,10 @@ TYGL has everything you truly need for configuration and nothing more:
 This is an example of a record about users:
 
 ```tygl
-# This file contains some data...
-# Edit it as needed!
+(
+This file contains some data...
+Edit it as needed!
+)
 
 Record title: "Users that visited us on this beautiful day"
 Metadata: {

@@ -3,12 +3,55 @@
 This is a simple specification for the TYGL configuration language.
 
 # Comments
-Comments start with a `#` (outside of strings).
-The comment spans until the end of the line and is ignored as a semantic part of the file.
+Comments are enclosed by parentheses `( )` and can appear anywhere outside of strings.
+They are ignored as a semantic part of the file.
 Example:
 ```tygl
-# This is a comment: the value describes the last achieved score
-Score: 300
+Score: 300 (the last achieved score)
+```
+
+Parentheses inside a comment must be balanced, and the nested ones are just part of the comment.
+Quotes have no meaning inside a comment,
+but the escape sequences `\(` and `\)` can be used to write an unbalanced parenthesis.
+Example:
+```tygl
+(Old name: "Smith \) Jones")
+```
+
+A comment must end on the same line where it starts, otherwise it is an error.
+The only exception is a multiline comment,
+which is opened by `(` immediately followed by the end of the line.
+It ends with the matching `)` on any of the following lines.
+Example:
+```tygl
+(
+This file contains some data...
+Edit it as needed!)
+```
+
+Every comment, including a multiline one, acts like a single space.
+It never ends a line, so a tuple can continue after it.
+Example:
+```tygl
+Scores: 9.8 (
+    The second score was removed
+    after the review.
+) 9.1
+```
+
+When a comment is between two values, a space is required before or after it.
+A comment glued to a value on just one side is fine,
+but a comment that is the only thing separating two values is an error.
+Example:
+```tygl
+Weight: 75kg(approximately) 80kg (allowed)
+Duration: 1h(approximately)6min (error)
+```
+
+Comments can be used in identifiers too, still acting like a single space.
+Example:
+```tygl
+Weight (in kg): 75 (the identifier is "Weight")
 ```
 
 # Values
@@ -17,7 +60,7 @@ There are 4 types of values: dictionaries, lists, numbers and strings.
 ## Dictionaries
 Dictionaries are sets of key-value pairs, called **fields**, enclosed by `{ }`.
 Each field is named by an **identifier**
-(containing all symbols except `:` and newline,
+(containing all symbols except `:`, `( )` and newline,
 with the escape sequence `\` supporting any codepoint),
 followed by `:` and a *tuple* of **values**.
 Example:
@@ -114,7 +157,7 @@ Binary sequence: 0b10_1100_0101
 Exponents in scientific notation are always written in decimal,
 but modify the number's significand in it's used base.
 ```tygl
-Big binary: 0b1_+9 # Equal to 0b10_0000_0000
+Big binary: 0b1_+9 (equal to 0b10_0000_0000)
 ```
 
 Numbers can have suffixes, usually used as units.
@@ -196,7 +239,8 @@ Comment: \
 The tuples are lists of values separated by a space ` `. All values are contained in tuples.
 It can be of any size, and contain values of any types.
 The space separating values is always required,
-even before special characters starting some values, like `[ ] { } " '`
+even before special characters starting some values, like `[ ] { } " '`.
+Comments and line continuations count as spaces here, as described in their sections.
 Example:
 ```tygl
 Favourite color: rgb 240 98 146
@@ -209,7 +253,7 @@ It always ends the value before it and acts as the separating space,
 so no space is required before the backslash.
 
 A line continuation inside a normal string is an error.
-Inside a comment, the backslash is just part of the comment and doesn't continue anything.
+Inside a multiline comment, the ending backslash means nothing and is ignored.
 In raw strings it is a normal character, like everything else there.
 
 Example:
@@ -248,9 +292,6 @@ They start with a backslash `\` and can be followed by:
 
 A backslash at the end of a line is not an escape sequence.
 It is a line continuation, described in the Tuples section.
-
-Note that some special characters don't currently have a meaning,
-but are still required to be escaped. Consider them reserved for future use.
 
 While some of these characters are supported in some places like in identifiers,
 they can still be written using escape sequences.
