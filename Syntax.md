@@ -12,7 +12,7 @@ Score: 300
 ```
 
 # Values
-There are 5 types of values: dictionaries, lists, numbers, strings and keywords.
+There are 4 types of values: dictionaries, lists, numbers and strings.
 
 ## Dictionaries
 Dictionaries are sets of key-value pairs, called **fields**, enclosed by `{ }`.
@@ -159,10 +159,10 @@ Blood type: AB+
 ### Raw strings
 Raw strings can be multiline. They are written with the double quote character directly followed by a new line.
 Each line of the string needs to start indented up to the opening quote, plus an additional space.
-This is decided as the following:
-- Exactly the same whitespace indentation as the previous line (the string of ` ` and `\t` characters before non-whitespace)
-- A string of space (` `) characters with the length of the number of characters before the opening quote, after the indent in the previous line
-- A single whitespace (` ` or `\t`), or the closing quote to end the string
+The expected sequence in order:
+1. Exactly the same whitespace indentation as the previous line (the string of ` ` and `\t` characters before non-whitespace)
+2. A string of space (` `) characters with the length of the number of characters before the opening quote, after the indent in the previous line
+3. A single whitespace (` ` or `\t`), or the closing quote to end the string
 The closing quote is aligned to the opening quote, without an additional space.
 
 All lines except the ones with opening and closing quotes are separate lines of the string,
@@ -203,7 +203,14 @@ Favourite color: rgb 240 98 146
 ```
 
 End of the line usually signifies the end of the tuple,
-but the escape character `\` at the line end can be used to continue the tuple on the next line.
+but a backslash `\` directly followed by the end of the line continues the tuple on the next line.
+This is a line continuation, not an escape sequence.
+It always ends the value before it and acts as the separating space,
+so no space is required before the backslash.
+
+A line continuation inside a normal string is an error.
+Inside a comment, the backslash is just part of the comment and doesn't continue anything.
+In raw strings it is a normal character, like everything else there.
 
 Example:
 ```tygl
@@ -213,7 +220,7 @@ I'm a multiline tuple: 1 two \
 
 # Escape sequences
 Escape sequences are used to write special characters not directly allowed in strings,
-identifiers and keywords, or those that are hard to type.
+identifiers and number suffixes, or those that are hard to type.
 The characters that are part of the escape sequence are never interpreted as special TYGL symbols.
 They start with a backslash `\` and can be followed by:
 - `n` - newline character
@@ -238,6 +245,9 @@ They start with a backslash `\` and can be followed by:
 - `x` and 2 hex digits - The byte of the specified hexadecimal value
 - `u` and 4 hex digits - Unicode code point of the specified hexadecimal value below 0x10000 (65536)
 - `U` and 8 hex digits - Unicode code point of the specified hexadecimal value
+
+A backslash at the end of a line is not an escape sequence.
+It is a line continuation, described in the Tuples section.
 
 Note that some special characters don't currently have a meaning,
 but are still required to be escaped. Consider them reserved for future use.
