@@ -40,7 +40,7 @@ Scores: 9.8 (
 ) 9.1
 ```
 
-When a comment is between two values, a space is required before or after it.
+When a comment is between two values, a space (or a comma) is required before or after it.
 A comment glued to a value on just one side is fine,
 but a comment that is the only thing separating two values is an error.
 Example:
@@ -63,7 +63,7 @@ There are 4 types of values: dictionaries, lists, numbers and strings.
 ## Dictionaries
 Dictionaries are sets of key-value pairs, called **fields**, enclosed by `{ }`.
 Each field is named by an **identifier**
-(containing all symbols except `:`, `( )` and newline,
+(containing all symbols except `:`, `,`, `( )` and newline,
 with the escape sequence `\` supporting any codepoint),
 followed by `:` and a *tuple* of **values**.
 Example:
@@ -75,8 +75,30 @@ Today's mentioned trivia: {
 }
 ```
 
-Fields are put each into its own line. Tuples containing one value are still tuples
-and they can contain no values at all too.
+Fields are separated by newlines or commas `,`, and the two can be mixed freely.
+Lines containing only whitespace or comments are ignored, so empty lines are just formatting.
+Two commas in a row, or a comma before the first or after the last field of a line are errors.
+Both `{}` and `{ }` are empty dictionaries.
+Example:
+```tygl
+Point: {X: 12.5, Y: 7.25}
+Size: {
+    Width: 800, Height: 600
+
+    Depth: 1
+}
+Empty: {}
+Error: {A: 1, B: 2,}
+```
+
+Tuples containing one value are still tuples.
+A field can't be left blank: an empty value is written as `-` (see Tuples).
+
+A comma inside an identifier is an error. Use the escape sequence `\,` instead.
+Example:
+```tygl
+Width\, height: 800 600
+```
 
 Whitespace around the identifiers is trimmed,
 and every run of spaces and tabs inside them is collapsed into a single space.
@@ -120,19 +142,38 @@ User: {
 
 
 ## Lists
-Lists are series of **items** enclosed by `[ ]`.
-Each item starts on its own line, and is also a tuple.
+Lists are series of **items** enclosed by `[ ]`. Each item is a tuple.
+Items are separated by newlines or commas `,`, and the two can be mixed freely.
+Just like in dictionaries, lines containing only whitespace or comments are ignored,
+and two commas in a row, or a comma before the first or after the last item of a line, are errors.
+An empty item is written as `-`, and it can also carry a comment.
+Both `[]` and `[ ]` are empty lists.
 Example:
 ```tygl
 Scores: [
-    9.8
-    8.5
+    9.8, 8.5
     9.1
 ]
+Points: [12.5 7.25, 3.0 1.5]
+Slots: [
+    1, -, 3
+
+    - (reserved for the bonus round)
+    5
+]
+Empty: []
+Error: [1, 2,]
 ```
 
 ## Numbers
-Numbers can be both integers and decimal (with decimal dot `.` only), signed with an optional `+` or `-`. 
+Numbers can be both integers and decimal (with decimal dot `.` only), signed with an optional `+` or `-`.
+The digits before the decimal dot can be left out, but a number always needs at least one digit.
+Example:
+```tygl
+Ratio: .5
+Offset: -.25
+Dot: . (a simple string)
+```
 
 Just for readability numbers can contain underscores between digits for spacing and grouping digits.
 Example:
@@ -153,9 +194,12 @@ Binary, octal and hexadecimal numbers are also supported:
 - prefix `0b` starts a binary number
 - prefix `0o` starts an octal number.
   Just `0` as a prefix doesn't start an octal number, unlike common implementations.
+A prefix must be followed by at least one digit of its base,
+otherwise the whole value is a simple string.
 Example:
 ```tygl
 Binary sequence: 0b10_1100_0101
+Code: 0xg (a simple string)
 ```
 
 Exponents in scientific notation are always written in decimal,
@@ -167,7 +211,7 @@ Big binary: 0b1_+9 (equal to 0b10_0000_0000)
 Numbers can have suffixes, usually used as units.
 The suffix starts with the first symbol that isn't otherwise expected at that part of the number
 and  can contain any character except the special ones used in values,
-`( ) [ ] { } " '` or newlines and spaces. For those characters you can use the escape sequence `\`.
+`( ) [ ] { } " ' ,` or newlines and spaces. For those characters you can use the escape sequence `\`.
 Example:
 ```tygl
 Weight: 75kg
@@ -196,12 +240,16 @@ Line: "John said \"Hello world!\""
 Simple strings are still pieces of text, but not enclosed in quotes.
 They are often used for programmer-friendly identifiers,
 to denote the format of values, or just to simplify writing of one-worded text.
-They start with a non-digit and can contain any character except the special ones used in values,
-`( ) [ ] { } " '` or newlines and spaces. For those characters you can use the escape sequence `\`.
+Any unquoted value that isn't a number is a simple string.
+It can contain any character except the special ones used in values,
+`( ) [ ] { } " ' ,` or newlines and spaces. For those characters you can use the escape sequence `\`.
 Example:
 ```tygl
 Blood type: AB+
 ```
+
+A lone `-` is not a simple string but an empty tuple, so write `\-` for a string containing just a minus.
+Simple strings that merely start with a sign, like `-v` or `+x`, are fine.
 
 ### Raw strings
 Raw strings can be multiline. They are written with the double quote character directly followed by a new line.
@@ -250,6 +298,22 @@ Example:
 Favourite color: rgb 240 98 146
 ```
 
+A comma `,` ends the tuple, as described for dictionaries and lists.
+No space is required around it.
+Example:
+```tygl
+Pairs: [1h,6min, 2h,15min] (4 items)
+```
+
+An empty tuple is written as a single minus `-`, which must be the only value in that tuple.
+A tuple can never be left blank.
+Example:
+```tygl
+Middle name: -
+Missing: (error)
+Mixed: 1 - 2 (error)
+```
+
 End of the line usually signifies the end of the tuple,
 but a backslash `\` directly followed by the end of the line continues the tuple on the next line.
 This is a line continuation, not an escape sequence.
@@ -282,6 +346,8 @@ They start with a backslash `\` and can be followed by:
 - `]` - closing bracket
 - `{` - opening brace
 - `}` - closing brace
+- `,` - comma
+- `-` - minus (not interpreted as an empty tuple)
 - `t` - tab
 - `v` - vertical tab
 - `r` - carriage return

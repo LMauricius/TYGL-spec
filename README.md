@@ -65,11 +65,7 @@ Users: [
         Duration:        1h 45min 12s
         Math result:     3.14
         Favourite color: rgb 240 98 146
-        Scores: [
-            9.2
-            8.9
-            9.6
-        ]
+        Scores: [9.2, 8.9, 9.6]
         Remark: "
                  Enjoyed the scenic route.
                  Planning to bring friends next time.
