@@ -168,11 +168,13 @@ Error: [1, 2,]
 ## Numbers
 Numbers can be both integers and decimal (with decimal dot `.` only), signed with an optional `+` or `-`.
 The digits before the decimal dot can be left out, but a number always needs at least one digit.
+A dot is only a decimal dot when a digit follows it, otherwise it starts the number's suffix (see below).
 Example:
 ```tygl
 Ratio: .5
 Offset: -.25
 Dot: . (a simple string)
+Version: 5. (the number 5 with the suffix ".")
 ```
 
 Just for readability numbers can contain underscores between digits for spacing and grouping digits.
@@ -200,6 +202,12 @@ Example:
 ```tygl
 Binary sequence: 0b10_1100_0101
 Code: 0xg (a simple string)
+```
+
+Numbers with a prefix can have a fractional part too, written in the same base.
+Example:
+```tygl
+One and a half: 0x1.8
 ```
 
 Exponents in scientific notation are always written in decimal,
