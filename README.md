@@ -43,6 +43,7 @@ Metadata: {
 Users: [
     {
         Name:            "John Smith"
+        Nickname:        Johnny
         Weight:          75kg
         Distance:        5km
         Duration:        1h 6min 46s
@@ -60,12 +61,13 @@ Users: [
     }
     {
         Name:            "Alice Johnson"
+        Nickname:        - (not given)
         Weight:          60kg
         Distance:        8.3km
         Duration:        1h 45min 12s
         Math result:     3.14
         Favourite color: rgb 240 98 146
-        Scores: [9.2, 8.9, 9.6]
+        Scores: [9.2, - (skipped), 9.6]
         Remark: "
                  Enjoyed the scenic route.
                  Planning to bring friends next time.
